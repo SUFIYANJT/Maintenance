@@ -23,6 +23,7 @@ public class createActivity extends Fragment {
         activityName=getActivity().findViewById(R.id.nameactivity);
         description=getActivity().findViewById(R.id.description);
         name=getActivity().findViewById(R.id.nameofcreater);
+        //some
         selectMachine=getActivity().findViewById(R.id.comboBox);
         selectComponent=getActivity().findViewById(R.id.comboBox1);
         selectSchedule=getActivity().findViewById(R.id.comboBox2);
