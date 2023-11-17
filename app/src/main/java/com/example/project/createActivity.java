@@ -16,6 +16,7 @@ public class createActivity extends Fragment {
     private EditText activityName,description,name;
     private Spinner selectMachine,selectComponent,selectSchedule;
     private Button submit;
+    //some change
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
