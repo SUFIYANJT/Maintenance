@@ -5,16 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/AppBar"
+        android:layout_width="match_parent"
+        style="@style/Tab"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/tablayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/app_name"/>
+    </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
+        style="@style/Tab"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/ViewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AppBar"
         app:layout_constraintVertical_bias="0"
+
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
         app:tabGravity="start">
 
         <com.google.android.material.tabs.TabItem
@@ -31,15 +48,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="pending activity"
-            tools:layout_editor_absoluteX="145dp"
-            tools:layout_editor_absoluteY="291dp" />
+           />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inspector review"
-            tools:layout_editor_absoluteX="280dp"
-            tools:layout_editor_absoluteY="254dp" />
+            />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
