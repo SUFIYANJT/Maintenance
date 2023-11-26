@@ -2,9 +2,13 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:stretchColumns="1,2,3">
-  <TableRow>
+  <TableRow
+      android:gravity="center"
+      android:layout_gravity="center"
+      >
       <TextView
           android:text="activity name"
           android:id="@+id/activity_name"
