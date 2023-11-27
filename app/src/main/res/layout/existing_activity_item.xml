@@ -13,17 +13,20 @@
           android:text="activity name"
           android:id="@+id/activity_name"
           android:padding="3dip"
+          android:gravity="center"
           android:layout_column="1"
           />
       <TextView
           android:text="description"
           android:padding="3dip"
+          android:gravity="center"
           android:layout_column="2"
           android:id="@+id/activity_description"
           />
       <TextView
           android:text="history"
           android:padding="3dip"
+          android:gravity="center"
           android:layout_column="3"
           android:id="@+id/activity_history"
           />

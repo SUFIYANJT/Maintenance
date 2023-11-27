@@ -6,6 +6,15 @@
     tools:context=".PendingActivity">
 
     <!-- TODO: Update blank fragment layout -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerView"
+            />
+    </androidx.core.widget.NestedScrollView>
 
 
 </FrameLayout>
