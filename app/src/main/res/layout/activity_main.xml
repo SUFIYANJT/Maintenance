@@ -18,7 +18,6 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#ffffff"
             app:title="@string/app_name"/>
     </com.google.android.material.appbar.AppBarLayout>
     <com.google.android.material.tabs.TabLayout
@@ -31,15 +30,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AppBar"
         app:layout_constraintVertical_bias="0"
-        app:tabMode="scrollable"
+
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         app:tabGravity="start">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="new Activity"
-             />
+            android:text="create activity" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

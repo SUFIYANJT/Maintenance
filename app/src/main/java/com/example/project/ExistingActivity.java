@@ -25,9 +25,6 @@ public class ExistingActivity extends Fragment {
         RecyclerView recyclerView=view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<DataTable> dataTables=new ArrayList<>();
-        DataTable dataTable1=new DataTable();
-        dataTable1.setData("activity Name","activity Description","History");
-        dataTables.add(dataTable1);
         recyclerView.setAdapter(new CustomRecyclerViewAdapter(dataTables));
         return  view;
     }//dd

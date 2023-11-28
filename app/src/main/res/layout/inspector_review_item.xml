@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:stretchColumns="1,2,3,4">
+    <TableRow>
+        <TextView
+            android:text="activity name"
+            android:id="@+id/inspector_activity_name"
+            android:padding="3dip"
+            android:layout_column="1"
+            />
+        <TextView
+            android:text="description"
+            android:padding="3dip"
+            android:layout_column="2"
+            android:id="@+id/inspector_activity_description"
+            />
+        <TextView
+            android:text="status"
+            android:padding="3dip"
+            android:layout_column="3"
+            android:id="@+id/inspector_activity_status"
+            />
+        <TextView
+            android:text="report"
+            android:padding="3dip"
+            android:layout_column="3"
+            android:id="@+id/inspector_activity_report"/>
+
+    </TableRow>
+</TableLayout>
