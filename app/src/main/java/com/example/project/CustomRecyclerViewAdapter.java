@@ -50,6 +50,11 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if(mode==1) {
+            if(position==0){
+                holder.name.setTextSize(20);
+                holder.description.setTextSize(20);
+                holder.history.setTextSize(20);
+            }
             holder.name.setText(dataTables.get(position).name);
             holder.description.setText(dataTables.get(position).description);
             holder.history.setText(dataTables.get(position).history);
