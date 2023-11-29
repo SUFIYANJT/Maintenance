@@ -25,7 +25,20 @@ public class ExistingActivity extends Fragment {
         RecyclerView recyclerView=view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<DataTable> dataTables=new ArrayList<>();
+        DataTable dataTable1=new DataTable();
+        DataTable dataTable2=new DataTable();
+        DataTable dataTable3=new DataTable();
+        DataTable dataTable4=new DataTable();
+        dataTable1.setData("activity Name","activity Description","History");
+        dataTable2.setData("activity 1","activity Description","History");
+        dataTable3.setData("activity Name","activity Description","History");
+        dataTable4.setData("activity Name","activity Description","History");
+        dataTables.add(dataTable1);
+        dataTables.add(dataTable2);
+        dataTables.add(dataTable3);
+        dataTables.add(dataTable4);
         recyclerView.setAdapter(new CustomRecyclerViewAdapter(dataTables));
         return  view;
+        //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
     }//dd
 }
