@@ -29,7 +29,7 @@ public class InspectorReview extends Fragment {
         PendingData pendingData1=new PendingData();
         pendingData1.setData("finished","description","activity1");
         pendingData.add(pendingData1);
-        recyclerView.setAdapter(new CustomRecyclerViewAdapter(pendingData,3));
+        recyclerView.setAdapter(new CustomRecyclerViewAdapter(pendingData,3,view.getContext()));
         return view;
     }
 }

@@ -2,6 +2,10 @@ package com.example.project;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,13 +22,16 @@ import java.util.List;
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
     List<DataTable> dataTables;
     List<PendingData> pendingData;
+    Context mainActivity;
     int mode=1;
-    public CustomRecyclerViewAdapter(List<DataTable> dataTables){
+    public CustomRecyclerViewAdapter(List<DataTable> dataTables, Context activity){
         this.dataTables=dataTables;
+        this.mainActivity=activity;
     }
-    public CustomRecyclerViewAdapter(List<PendingData> pendingData,int i){
+    public CustomRecyclerViewAdapter(List<PendingData> pendingData,int i,Context activity){
         this.mode=i;
         this.pendingData=pendingData;
+        this.mainActivity=activity;
     }
     @NonNull
     @Override
@@ -50,14 +58,10 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if(mode==1) {
-            if(position==0){
-                holder.name.setTextSize(20);
-                holder.description.setTextSize(20);
-                holder.history.setTextSize(20);
-            }
             holder.name.setText(dataTables.get(position).name);
             holder.description.setText(dataTables.get(position).description);
             holder.history.setText(dataTables.get(position).history);
+
         } else if (mode==2) {
             holder.progressBar.setProgress(pendingData.get(position).progress,true);
             holder.description1.setText(pendingData.get(position).description);
@@ -85,6 +89,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder
 class MyViewHolder extends RecyclerView.ViewHolder{
     TextView name,description,history,status,report;
     TextView activity_name,description1;
+    ConstraintLayout constraintLayout;
     com.google.android.material.progressindicator.LinearProgressIndicator progressBar;
     public MyViewHolder(@NonNull View itemView,int mode) {
         super(itemView);
@@ -92,6 +97,7 @@ class MyViewHolder extends RecyclerView.ViewHolder{
             name = itemView.findViewById(R.id.activity_name);
             description = itemView.findViewById(R.id.activity_description);
             history = itemView.findViewById(R.id.activity_history);
+            constraintLayout=itemView.findViewById(R.id.existItem);
         }else if (mode==2){
             activity_name=itemView.findViewById(R.id.pending_activity_name);
             description1=itemView.findViewById(R.id.pending_description_name);

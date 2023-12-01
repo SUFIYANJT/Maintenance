@@ -29,7 +29,7 @@ public class PendingActivity extends Fragment {
         PendingData pendingData1=new PendingData();
         pendingData1.setData(10,"description","activity 1");
         pendingData.add(pendingData1);
-        recyclerView.setAdapter(new CustomRecyclerViewAdapter(pendingData,2));
+        recyclerView.setAdapter(new CustomRecyclerViewAdapter(pendingData,2,view.getContext()));
         return view;
     }
 }

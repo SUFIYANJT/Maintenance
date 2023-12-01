@@ -1,11 +1,16 @@
 package com.example.project;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +34,30 @@ public class ExistingActivity extends Fragment {
         DataTable dataTable2=new DataTable();
         DataTable dataTable3=new DataTable();
         DataTable dataTable4=new DataTable();
-        dataTable1.setData("activity Name","activity Description","History");
-        dataTable2.setData("activity 1","activity Description","History");
-        dataTable3.setData("activity Name","activity Description","History");
-        dataTable4.setData("activity Name","activity Description","History");
+        dataTable1.setData("activity 1","activity Description","time");
+        dataTable2.setData("activity 2","activity Description","time");
+        dataTable3.setData("activity 3","activity Description","time");
+        dataTable4.setData("activity 4","activity Description","time");
         dataTables.add(dataTable1);
         dataTables.add(dataTable2);
         dataTables.add(dataTable3);
         dataTables.add(dataTable4);
-        recyclerView.setAdapter(new CustomRecyclerViewAdapter(dataTables));
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(view.getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //view.setBackgroundColor(getResources().getColor(R.color.gray));
+                view.setAlpha(0f);
+                view.animate().alpha(1f).setDuration(500).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent=new Intent(view.getContext(),EditActivity.class);
+                        view.getContext().startActivity(intent);
+                    }
+                });
+
+            }
+        }));
+        recyclerView.setAdapter(new CustomRecyclerViewAdapter(dataTables,view.getContext()));
         return  view;
         //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
     }//dd

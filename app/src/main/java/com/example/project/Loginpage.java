@@ -29,12 +29,12 @@ public class Loginpage extends AppCompatActivity {
                 // Replace the following with your authentication logic
                 String username = editTextUsername.getText().toString();
                 String password = editTextPassword.getText().toString();
-
+                Intent intent=new Intent(Loginpage.this,MainActivity.class);
+                startActivity(intent);
                 if (username.equals("admin") && password.equals("admin123")) {
                     // Authentication successful
 
-                    Intent intent=new Intent(Loginpage.this,MainActivity.class);
-                            startActivity(intent);
+
                 } else {
                     // Authentication failed
                     Toast.makeText(Loginpage.this, "Login failed", Toast.LENGTH_SHORT).show();
