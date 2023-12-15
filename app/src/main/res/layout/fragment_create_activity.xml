@@ -46,7 +46,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="name activity   :"
+                    android:text="Name activity   :"
                     android:textSize="20dp"
                     android:gravity="center|center_horizontal" />
 

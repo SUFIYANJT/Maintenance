@@ -1,13 +1,7 @@
 package com.example.project;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +13,20 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class createActivity extends Fragment {
     //some changes
+    public static String TAG="ContentView";
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_create_activity, container, false);
@@ -53,6 +48,29 @@ public class createActivity extends Fragment {
         arrayList1.add("component2");
         arrayList2.add("weekly");
         arrayList2.add("monthly");
+        ApiService apiService = RetrofitClient.getApiService();
+
+        Call<User> call = apiService.getUser("");
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User user = response.body();
+                    Toast.makeText(view.getContext(), user.name, Toast.LENGTH_SHORT).show();
+                    // Handle the user data here
+                } else {
+                    // Handle unsuccessful response
+                    Toast.makeText(view.getContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: "+response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                // Handle failure: network errors, parsing errors, etc.
+                Toast.makeText(view.getContext(), "failed to connect", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         selectMachine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -96,74 +114,8 @@ public class createActivity extends Fragment {
         selectMachine.setAdapter(stringArrayAdapter);
         selectComponent.setAdapter(stringArrayAdapter1);
         selectSchedule.setAdapter(stringArrayAdapter2);
-
-        Communication communication=new Communication(context);
-        communication.start();
         return view;
 
     }
-    private class Communication extends Thread{
-        Context context;
-        public Communication(Context context){
-            this.context=context;
-        }
-        @Override
-        public void run(){
-            //String url = "http://192.168.1.10:8000/home";
-            String url = "https://api.example.com/data";
 
-            // Create a URL object
-            URL apiUrl = null;
-            try {
-                apiUrl = new URL(url);
-            } catch (MalformedURLException e) {
-                Log.d(TAG, "some exceptiom0");
-            }
-
-            // Open a connection to the URL
-            HttpURLConnection connection = null;
-            try {
-                connection = (HttpURLConnection) apiUrl.openConnection();
-            } catch (IOException e) {
-                Log.d(TAG, "some exceptiom1");
-            }
-
-            // Set the request method to GET
-            try {
-                connection.setRequestMethod("GET");
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-                Log.d(TAG, "some exceptiom2");
-            }
-
-            // Get the response code
-            int responseCode = 0;
-            try {
-                responseCode = connection.getResponseCode();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, String.valueOf(responseCode));
-            }
-         //   Log.d(TAG, String.valueOf(responseCode));
-            if(responseCode>0) {
-                Toast.makeText(context, "Connected!", Toast.LENGTH_SHORT).show();
-                // Read the response from the input stream
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                    String line;
-                    StringBuilder response = new StringBuilder();
-
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-
-                    System.out.println("Response Content:\n" + response.toString());
-                } catch (IOException e) {
-                    Log.d(TAG, "some exceptiommmmm");
-                }
-            }
-
-            // Close the connection
-            connection.disconnect();
-        }
-    }
 }
