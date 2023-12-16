@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -49,29 +51,6 @@ public class createActivity extends Fragment {
         arrayList2.add("weekly");
         arrayList2.add("monthly");
         ApiService apiService = RetrofitClient.getApiService();
-
-        Call<User> call = apiService.getUser("");
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User user = response.body();
-                    Toast.makeText(view.getContext(), user.name, Toast.LENGTH_SHORT).show();
-                    // Handle the user data here
-                } else {
-                    // Handle unsuccessful response
-                    Toast.makeText(view.getContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onResponse: "+response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                // Handle failure: network errors, parsing errors, etc.
-                Toast.makeText(view.getContext(), "failed to connect", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         selectMachine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -103,6 +82,36 @@ public class createActivity extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+        submit=view.findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<ResponseDjango> call = apiService.getUser("");
+                call.enqueue(new Callback<ResponseDjango>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseDjango> call, Response<ResponseDjango> response) {
+                        if(response.isSuccessful()){
+                            ResponseDjango responseDjango1 = response.body();
+
+                            // Logging the entire response body as a string
+                            if (responseDjango1 != null) {
+                                String responseBodyString = new Gson().toJson(responseDjango1); // Convert to JSON string
+                                Log.d(TAG, "Response Body: " + responseBodyString);
+                            }
+                            Log.d(TAG, "onResponse: "+responseDjango1.getResponse().get("0"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseDjango> call, Throwable t) {
+                        Log.d(TAG, "onFailure: failed");
+                        Log.d(TAG, "Failed: " + t.getMessage(), t);
+                    }
+
+                });
             }
         });
         ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(view.getContext(), android.R.layout.simple_expandable_list_item_1,arrayList);
