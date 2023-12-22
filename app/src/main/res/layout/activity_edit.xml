@@ -5,5 +5,236 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditActivity">
+    <Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/toolbarEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightPrimary"
+        app:layout_constraintVertical_bias="1"
+        android:titleTextColor="@color/white"
+        android:title="Edit Activity"/>
+    <LinearLayout
+        android:id="@+id/nameactivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarEdit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name activity   :"
+            android:textSize="20dp"
+            android:gravity="center|center_horizontal" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter activity name"
+            tools:layout_editor_absoluteX="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/nameactivity"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="description       :"
+            android:textSize="20dp"
+            android:gravity="center|center_horizontal" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter activity description"
+            tools:layout_editor_absoluteX="16dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/selectmachine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="0in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Select Machine   :"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/comboBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupTheme="@style/Tab"
+            android:layout_below="@id/textView"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp" >
+
+        </Spinner>
+
+        <EditText
+            android:id="@+id/customInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comboBox"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Type your own"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectcomponent"
+        app:layout_constraintTop_toBottomOf="@+id/selectmachine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Select Component : "
+            android:textSize="18dp"/>
+        <Spinner
+            android:id="@+id/comboBox1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/customInput1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comboBox"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Type your own"
+            android:visibility="gone"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectsedule"
+        app:layout_constraintTop_toBottomOf="@+id/selectcomponent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Select Schedule : "
+            android:textSize="20dp"/>
+
+        <Spinner
+            android:id="@+id/comboBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/customInput2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comboBox"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Type your own"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectUser"
+        app:layout_constraintTop_toBottomOf="@+id/selectsedule"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="10dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/customInput3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="false"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Select user" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_below="@id/customInput3"
+            android:layout_alignParentBottom="false"
+            android:id="@+id/comboBox3"/>
+    </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Assign"
+        android:id="@+id/submit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectsedule"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:layout_marginTop="50dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

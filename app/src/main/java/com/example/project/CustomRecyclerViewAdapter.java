@@ -15,11 +15,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project.HelperClass.DataHolder.MyModel;
 
 import java.util.List;
 
-public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.MyViewHolder> {
     List<DataTable> dataTables;
     List<PendingData> pendingData;
     Context mainActivity;
@@ -56,17 +59,44 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if(mode==1) {
             holder.name.setText(dataTables.get(position).name);
             holder.description.setText(dataTables.get(position).description);
-            holder.history.setText(dataTables.get(position).history);
+            holder.history.setText(String.format("time remaining: %s", String.valueOf(dataTables.get(position).getTime())));
+            holder.constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    v.setAlpha(0f);
+                    v.animate().alpha(1f).setDuration(500).withEndAction(() -> {
+                        Intent intent=new Intent(v.getContext(),EditActivity.class);
+                        intent.putExtra("activity_id",dataTables.get(position).getActivity_id());
+                        intent.putExtra("activity_name",dataTables.get(position).getName());
+                        intent.putExtra("description",dataTables.get(position).getDescription());
+                        intent.putExtra("machine_id",dataTables.get(position).getMachine_id());
+                        intent.putExtra("component_id",dataTables.get(position).getComponent_id());
+                        intent.putExtra("schedule_id",dataTables.get(position).getSchedule_id());
+                        intent.putExtra("dataTable",dataTables.get(position));
+                        mainActivity.startActivity(intent);
+                    });
+                    return true;
+                }
+            });
 
         } else if (mode==2) {
-            holder.progressBar.setProgress(pendingData.get(position).progress,true);
+            holder.progressBar.setProgress(10,true);
             holder.description1.setText(pendingData.get(position).description);
-            holder.activity_name.setText(pendingData.get(position).activity_name);
+            holder.activity_name.setText(pendingData.get(position).getName());
         } else if (mode==3) {
+            holder.activity_name.setText(pendingData.get(position).getName());
+            holder.description.setText(pendingData.get(position).description);
+            holder.report.setText("view");
+            holder.report.setClickable(true);
+            holder.report.setOnClickListener(v -> {
+                Intent intent=new Intent(mainActivity,ReportViewer.class);
+                intent.putExtra("activity_id",pendingData.get(position).getId());
+                mainActivity.startActivity(intent);
+            });
 
         }
 
@@ -85,28 +115,27 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder
         }
         return size;
     }
-}
-class MyViewHolder extends RecyclerView.ViewHolder{
-    TextView name,description,history,status,report;
-    TextView activity_name,description1;
-    ConstraintLayout constraintLayout;
-    com.google.android.material.progressindicator.LinearProgressIndicator progressBar;
-    public MyViewHolder(@NonNull View itemView,int mode) {
-        super(itemView);
-        if(mode==1) {
-            name = itemView.findViewById(R.id.activity_name);
-            description = itemView.findViewById(R.id.activity_description);
-            history = itemView.findViewById(R.id.activity_history);
-            constraintLayout=itemView.findViewById(R.id.existItem);
-        }else if (mode==2){
-            activity_name=itemView.findViewById(R.id.pending_activity_name);
-            description1=itemView.findViewById(R.id.pending_description_name);
-            progressBar=itemView.findViewById(R.id.pending_progress);
-        } else if (mode==3) {
-            activity_name=itemView.findViewById(R.id.inspector_activity_name);
-            description=itemView.findViewById(R.id.inspector_activity_description);
-            status=itemView.findViewById(R.id.inspector_activity_status);
-            report=itemView.findViewById(R.id.inspector_activity_report);
+    class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView name,description,history,status,report;
+        TextView activity_name,description1;
+        ConstraintLayout constraintLayout;
+        com.google.android.material.progressindicator.LinearProgressIndicator progressBar;
+        public MyViewHolder(@NonNull View itemView,int mode) {
+            super(itemView);
+            if(mode==1) {
+                name = itemView.findViewById(R.id.activity_name);
+                description = itemView.findViewById(R.id.activity_description);
+                history = itemView.findViewById(R.id.activity_history);
+                constraintLayout=itemView.findViewById(R.id.existItem);
+            }else if (mode==2){
+                activity_name=itemView.findViewById(R.id.pending_activity_name);
+                description1=itemView.findViewById(R.id.pending_description_name);
+                progressBar=itemView.findViewById(R.id.pending_progress);
+            } else if (mode==3) {
+                activity_name=itemView.findViewById(R.id.inspector_activity_name);
+                description=itemView.findViewById(R.id.inspector_activity_description);
+                report=itemView.findViewById(R.id.inspector_activity_report);
+            }
         }
     }
 }

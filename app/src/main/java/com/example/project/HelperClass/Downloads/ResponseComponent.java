@@ -1,36 +1,31 @@
-package com.example.project;
+package com.example.project.HelperClass.Downloads;
 
-import static com.example.project.createActivity.TAG;
-
-import android.util.Log;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-public class ResponseDjango {
 
-    public HashMap<String, MachineData> response;
+public class ResponseComponent {
 
-    public HashMap<String, MachineData> getResponse() {
+    private HashMap<String,ComponentData > response;
+
+    public HashMap<String, ComponentData> getResponse() {
         return response;
     }
 
-    public void setResponse(HashMap<String, MachineData> response) {
+    public void setResponse(HashMap<String,ComponentData> response) {
         this.response = response;
     }
-    public static class MachineData {
+    public static class ComponentData {
         @SerializedName("model")
         @Expose
-        public String model;
+        private String model;
         @SerializedName("pk")
         @Expose
-        public int pk;
+        private int pk;
         @SerializedName("fields")
         @Expose
-        public Fields fields;
+        private Fields fields;
 
         public String getModel() {
             return model;
@@ -57,17 +52,17 @@ public class ResponseDjango {
         }
 
         public static class Fields {
-            @SerializedName("machine_name")
-            public String machine_name;
 
-            public String getMachine_name() {
-                return machine_name;
+            @SerializedName("component_name")
+            private String component_name;
+
+            public String getComponent_name() {
+                return component_name;
             }
 
-            public void setMachine_name(String machine_name) {
-                this.machine_name = machine_name;
+            public void setComponent_name(String component_name) {
+                this.component_name = component_name;
             }
         }
     }
 }
-

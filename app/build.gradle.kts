@@ -45,4 +45,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-jackson:2.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
 }

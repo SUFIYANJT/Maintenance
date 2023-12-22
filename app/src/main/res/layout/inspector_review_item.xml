@@ -6,28 +6,28 @@
     android:stretchColumns="1,2,3,4">
     <TableRow>
         <TextView
-            android:text="activity name"
+            android:layout_width="match_parent"
             android:id="@+id/inspector_activity_name"
             android:padding="3dip"
+            android:gravity="left"
             android:layout_column="1"
             />
         <TextView
-            android:text="description"
+            android:layout_width="match_parent"
             android:padding="3dip"
+            android:gravity="center_horizontal"
+            android:maxWidth="100dp"
             android:layout_column="2"
             android:id="@+id/inspector_activity_description"
             />
         <TextView
-            android:text="status"
+            android:gravity="right"
+            android:layout_width="match_parent"
             android:padding="3dip"
-            android:layout_column="3"
-            android:id="@+id/inspector_activity_status"
-            />
-        <TextView
-            android:text="report"
-            android:padding="3dip"
+            android:textColor="#0000ff"
+            android:autoLink="none"
+            android:textColorLink="#0000FF"
             android:layout_column="3"
             android:id="@+id/inspector_activity_report"/>
-
     </TableRow>
 </TableLayout>

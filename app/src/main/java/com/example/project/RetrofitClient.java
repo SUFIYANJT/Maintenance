@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://192.168.43.97:8000/home/";
+    private static final String BASE_URL = "http://192.168.226.157:8000/home/";
     private static Retrofit retrofit = null;
 
     public static ApiService getApiService() {

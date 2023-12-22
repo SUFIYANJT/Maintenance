@@ -2,6 +2,7 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
@@ -26,5 +27,4 @@ public class MainActivity extends AppCompatActivity {
         fragmentAdapter.addFragment(new InspectorReview(),"Inspector Review");
         viewPager.setAdapter(fragmentAdapter);
     }
-
 }
