@@ -5,6 +5,8 @@
     <string name="activity_name">activity name :</string>
     <string name="description">description :</string>
     <string name="approve">Approve</string>
+    <string name="search_activity">search activity</string>
+    <string name="enter_text">    Enter Report</string>
     <string-array name="SelectMachineDropDowm">
         <item>Machine1</item>
         <item>Machine2</item>

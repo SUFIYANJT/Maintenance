@@ -13,7 +13,10 @@ import java.util.List;
 public class MyModel extends ViewModel {
     private MutableLiveData<List<DataTable>> textLiveData = new MutableLiveData<>();
     private List<DataTable> dataTables;
+    private List<DataTable> OriginaldataTables;
     private MutableLiveData<DataTable> dataTable=new MutableLiveData<DataTable>();
+    private ArrayList<DataTable> dataTablearraylist=new ArrayList<DataTable>();
+
     private MutableLiveData<Integer> DeletePositionInPending=new MutableLiveData<>();
     private MutableLiveData<ArrayList<String>> responseDjangoMutableLiveData=new MutableLiveData<>();
     private MutableLiveData<ArrayList<String>> responseComponentMutableLiveData=new MutableLiveData<>();
@@ -30,8 +33,20 @@ public class MyModel extends ViewModel {
     public void setData(List<DataTable> dataTables){
         this.dataTables=dataTables;
     }
+    public void setDataOriginal(List<DataTable> dataTables){
+        this.OriginaldataTables=dataTables;
+    }
+    public List<DataTable> getOriginaldataTables(){
+        return OriginaldataTables;
+    }
+    public void setDataIssued(List<DataTable> dataTables){
+        this.dataTablearraylist=(ArrayList<DataTable>)dataTables;
+    }
     public List<DataTable> getDataTables(){
         return dataTables;
+    }
+    public ArrayList<DataTable> getDataTablesIssued(){
+        return dataTablearraylist;
     }
 
     public MutableLiveData<DataTable> getDataTable() {

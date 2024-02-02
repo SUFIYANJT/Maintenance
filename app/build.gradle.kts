@@ -44,6 +44,10 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:3.4.1")
     implementation("com.squareup.retrofit2:converter-jackson:2.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")

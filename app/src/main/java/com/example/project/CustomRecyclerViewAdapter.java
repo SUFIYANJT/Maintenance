@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.HelperClass.DataHolder.MyModel;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView name,description,history,status,report;
         TextView activity_name,description1;
-        ConstraintLayout constraintLayout;
+        MaterialCardView constraintLayout;
         com.google.android.material.progressindicator.LinearProgressIndicator progressBar;
         public MyViewHolder(@NonNull View itemView,int mode) {
             super(itemView);

@@ -1,5 +1,5 @@
 package com.example.project;
-import com.example.project.HelperClass.Downloads.ChangeSeeker;
+import  com.example.project.HelperClass.Downloads.ChangeSeeker;
 import com.example.project.HelperClass.Downloads.LoginRes;
 import com.example.project.HelperClass.Downloads.ResponseActivity;
 import com.example.project.HelperClass.Downloads.ResponseComponent;
@@ -11,10 +11,14 @@ import com.example.project.HelperClass.Uploads.NewActivityInstance;
 import com.example.project.HelperClass.Uploads.SubmitData;
 import com.example.project.HelperClass.Uploads.TaskData;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -26,8 +30,8 @@ public interface ApiService {
     Call<ResponseSchedule> getSchedule(@Path("userId") String userId);
     @POST("/home/update")
     Call<Integer> sendActivityInstance(@Body NewActivityInstance newActivityInstance);
-    @GET("/home/Activity")
-    Call<ResponseActivity> getActivityData();
+    @POST("/home/Activity")
+    Call<ResponseActivity> getActivityData(@Body int i);
     @GET("/home/check{flag}")
     Call<Integer> check(@Path("flag") String flag);
     @GET("/home/checkdouble")
@@ -42,7 +46,6 @@ public interface ApiService {
 
     @POST("/home/login")
     Call<LoginRes> checkUser(@Body LoginData loginData);
-
     @POST("/home/submit")
     Call<Integer> submit(@Body SubmitData submitData);
 
@@ -52,7 +55,7 @@ public interface ApiService {
     @POST("/home/uploadAssignment")
     Call<Integer> uploadAssignment(@Body TaskData taskData);
     @POST("/home/reportView")
-    Call<ReportObj> getReport(@Body int id);
+    Call<SubmitData> getReport(@Body int id);
 
     @POST("/home/activityUpdate")
     Call<Integer> updateActivity(@Body int id);

@@ -4,10 +4,13 @@ import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.project.HelperClass.DataHolder.MyModel;
 import com.example.project.HelperClass.Downloads.ChangeSeeker;
@@ -35,19 +39,15 @@ public class ExistingActivity extends Fragment {
 
 
     CustomRecyclerViewAdapter customRecyclerViewAdapter;
+    EditText search;
     int NUMBER_OF_ITEM=0;
-    int POSITION=0;
     public List<DataTable> dataTables;
-    ArrayList<Integer> verifierList;
+    public List<DataTable> OriginaldataTables;
     RecyclerView recyclerView;
-    List<DataTable> copyList;
     Timer timer;
-    boolean timerFlag=true;
     boolean flag=false;
-    private int NUMBER_OF_ITEM_IN_CHECK;
     MyModel viewModel;
-
-
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,14 +55,52 @@ public class ExistingActivity extends Fragment {
         View view= inflater.inflate(R.layout.fragment_existing_activity, container, false);
         viewModel=new ViewModelProvider(requireActivity()).get(MyModel.class);
         dataTables=viewModel.getDataTables();
+        OriginaldataTables=viewModel.getOriginaldataTables();
         recyclerView = view.findViewById(R.id.recyclerView);
         if(dataTables==null)
             dataTables = new ArrayList<>();
+        if(OriginaldataTables==null){
+            OriginaldataTables=new ArrayList<>();
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         customRecyclerViewAdapter = new CustomRecyclerViewAdapter(dataTables,view.getContext());
         recyclerView.setAdapter(customRecyclerViewAdapter);
         timer = new Timer();
         NUMBER_OF_ITEM=0;
+        search=view.findViewById(R.id.search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int i=0;
+                customRecyclerViewAdapter.notifyItemRangeRemoved(0,dataTables.size());
+                dataTables.clear();
+                OriginaldataTables.forEach(dataTable -> {
+                    if(dataTable.getName().contains(s)){
+                        dataTables.add(dataTable);
+                    }
+                });
+                customRecyclerViewAdapter.notifyItemRangeInserted(0,dataTables.size());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                customRecyclerViewAdapter.notifyItemRangeRemoved(0,dataTables.size());
+                dataTables.clear();
+                InitCall();
+            }
+        });
        // dataTables.clear();
         if(dataTables.size()==0) {
             Log.d(TAG, "onCreateView: looks like datatables value is clearing on reach scroll");
@@ -78,6 +116,7 @@ public class ExistingActivity extends Fragment {
     }
     public void updateUI(ArrayList<ResponseActivity.ActivityData> demoAndroidData){
         dataTables.clear();
+        OriginaldataTables.clear();
         customRecyclerViewAdapter.notifyItemRangeRemoved(0,dataTables.size()-1);
         int i=0;
         Log.d(TAG, "onCreateView: "+NUMBER_OF_ITEM+" "+dataTables.size());
@@ -94,13 +133,17 @@ public class ExistingActivity extends Fragment {
             Log.d(TAG, "onResponse1: " + pk + " " + model + " " + activity_name + " " + activity_description);
             DataTable dataTable1 = new DataTable(pk,activity_name, activity_description, "time",machine_id,component_id,schedule_id,status_id,fields.getActivity_issued_date());
             dataTables.add(dataTable1);
+            OriginaldataTables.add(dataTable1);
             customRecyclerViewAdapter.notifyItemInserted(i);
             i++;
+        }
+        if(swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
     public void InitCall(){
         ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseActivity> responseActivityCall=apiService.getActivityData();
+        Call<ResponseActivity> responseActivityCall=apiService.getActivityData(0);
 
         responseActivityCall.enqueue(new Callback<ResponseActivity>() {
             @Override
@@ -123,10 +166,6 @@ public class ExistingActivity extends Fragment {
                             updateUI(demoAndroidData);
                             int i=viewModel.updateText(dataTables);
                             Log.d(TAG, "onResponse: calling recycler render "+dataTables.size()+" "+i);
-                            if(!flag) {
-                                flag=true;
-                                startChecking(timer);
-                            }
                         }else{
                             Log.d(TAG, "onResponse: problem with count "+NUMBER_OF_ITEM+" "+responseActivity.getResponse().size());
                         }
@@ -138,147 +177,6 @@ public class ExistingActivity extends Fragment {
             }
             @Override
             public void onFailure(Call<ResponseActivity> call, Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-    }
-    public void startChecking(Timer timer){
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ApiService apiService = RetrofitClient.getApiService();
-                Call<Integer> check=apiService.check("");
-                check.enqueue(new Callback<Integer>() {
-                    @Override
-                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        if(response.isSuccessful()){
-                            Integer i=response.body();
-                            Log.d(TAG, "onResponse: change count "+i);
-                            if(i!=null&&NUMBER_OF_ITEM==0){
-                                NUMBER_OF_ITEM=dataTables.size();
-                                NUMBER_OF_ITEM_IN_CHECK=i;
-                            }
-                            if(i!=null&&NUMBER_OF_ITEM_IN_CHECK<i){
-                                //insertion
-                                Log.d(TAG, "onResponse: change occurred in activity");
-                                doubleCheck();
-                                NUMBER_OF_ITEM_IN_CHECK=i;
-                            }
-                            if(flag)
-                                startChecking(timer);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Integer> call, Throwable t) {
-
-                    }
-                });
-                
-            }
-        },1000);
-    }
-    public void doubleCheck(){
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ChangeSeeker> check=apiService.getChangeSeeker();
-        Log.d(TAG, "doubleCheck: called");
-        check.enqueue(new Callback<ChangeSeeker>() {
-            @Override
-            public void onResponse(Call<ChangeSeeker> call, Response<ChangeSeeker> response) {
-                if(response.isSuccessful()){
-                    Log.d(TAG, "doubleChecked: "+response.body());
-                    ChangeSeeker changeSeeker=response.body();
-                    if(changeSeeker.getResponseData()!=null){
-                        ChangeSeeker.ResponseData responseData=changeSeeker.getResponseData();
-                        if(responseData!=null){
-                            Log.d(TAG, "doubleCheck: "+responseData.getChange_activity_id()+" "+responseData.getChange_activity_type_id()+" "+responseData.getChange_seeker_id()+" "+responseData.getPosition());
-                            Log.d(TAG, "doubleCheck NUMBER OF ITEM"+NUMBER_OF_ITEM);
-                            POSITION= responseData.getPosition();
-                            switch (responseData.getChange_activity_type_id()) {
-                                case "delete":
-                                    int pos = POSITION - 1;
-                                    Log.d(TAG, "doubleCheck: POSITION"+pos);
-                                    dataTables.remove(pos);
-                                    customRecyclerViewAdapter.notifyItemRemoved(pos);
-                                    viewModel.updateText(dataTables);
-                                    Log.d(TAG, "doubleCheck: removed should work");
-                                    break;
-                                case "insert":
-                                    InsertCall(POSITION,responseData.getChange_activity_id());
-                                    viewModel.updateText(dataTables);
-                                    break;
-                                case "update":
-                                    updateCall(POSITION);
-                                    break;
-                            }
-                        }else{
-                            Log.d(TAG, "doubleCheck: parsing error");
-                        }
-
-                    }else{
-                        Log.d(TAG, "doubleCheck: null response");
-                    }
-                }else{
-                    Log.d(TAG, "doubleChecked: error");
-                    flag=true;
-                }
-            }
-            @Override
-            public void onFailure(Call<ChangeSeeker> call, Throwable t) {
-                Log.e(TAG, "doubleChecked  : ",t );
-            }
-        });
-
-    }
-
-    private void updateCall(int POSITION) {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseActivity.ActivityData.Fields> check=apiService.checkUpdate(POSITION);
-        check.enqueue(new Callback<ResponseActivity.ActivityData.Fields>() {
-            @Override
-            public void onResponse(Call<ResponseActivity.ActivityData.Fields> call, Response<ResponseActivity.ActivityData.Fields> response) {
-                if(response.isSuccessful()){
-                    ResponseActivity.ActivityData.Fields fields=response.body();
-                    if(fields!=null){
-                        DataTable dataTable=new DataTable(fields.getActivity_id(),fields.getActivity_name(),fields.getActivity_description(),"history",fields.getActivity_machine_id(),fields.getActivity_component_id(),fields.getActivity_schedule_id(), fields.getActivity_status_id(),fields.getActivity_issued_date());
-                        dataTables.add(POSITION,dataTable);
-                        customRecyclerViewAdapter.notifyItemChanged(POSITION);
-                        viewModel.setDataTable(dataTable);
-                    }else{
-                        Log.d(TAG, "fields is null: ");
-                    }
-                }else{
-                    Log.d(TAG, "insertCall failed");
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseActivity.ActivityData.Fields> call, Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-    }
-
-    private void InsertCall(int POSITION, int changeActivityId) {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseActivity.ActivityData.Fields> check=apiService.checkInsert(changeActivityId);
-        check.enqueue(new Callback<ResponseActivity.ActivityData.Fields>() {
-            @Override
-            public void onResponse(Call<ResponseActivity.ActivityData.Fields> call, Response<ResponseActivity.ActivityData.Fields> response) {
-                if(response.isSuccessful()){
-                    ResponseActivity.ActivityData.Fields fields=response.body();
-                    Log.d(TAG, "doubleCheck: trying to insert into the list"+POSITION+" "+dataTables.size());
-                    if(fields!=null){
-                        DataTable dataTable=new DataTable(fields.getActivity_id(),fields.getActivity_name(),fields.getActivity_description(),"history",fields.getActivity_machine_id(),fields.getActivity_component_id(),fields.getActivity_schedule_id(), fields.getActivity_status_id(),fields.getActivity_issued_date());
-                        dataTables.add(POSITION-1,dataTable);
-                        customRecyclerViewAdapter.notifyItemInserted(POSITION-1);
-                    }else{
-                        Log.d(TAG, "fields is null: ");
-                    }
-                }else{
-                    Log.d(TAG, "insertCall failed");
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseActivity.ActivityData.Fields> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
             }
         });
@@ -300,6 +198,7 @@ public class ExistingActivity extends Fragment {
     public void onPause() {
         super.onPause();
         viewModel.setData(dataTables);
+        viewModel.setDataOriginal(OriginaldataTables);
         Log.d(TAG, "onResponse: change timer paused ");
         flag=false;
     }
@@ -309,7 +208,7 @@ public class ExistingActivity extends Fragment {
         super.onResume();
         if(!flag){
             flag=true;
-            startChecking(timer);
+            //startChecking(timer);
         }
         Log.d(TAG, "onResponse: change timer started");
     }

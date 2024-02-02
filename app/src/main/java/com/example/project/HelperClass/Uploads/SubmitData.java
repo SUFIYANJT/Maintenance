@@ -1,9 +1,42 @@
 package com.example.project.HelperClass.Uploads;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SubmitData {
+    @SerializedName("submittext")
     private String submitText;
-    private int activity_id;
-    private int user_id;
+
+    @SerializedName("activity_id")
+    private int activityId;
+
+    @SerializedName("user_id")
+    private int userId;
+
+    @SerializedName("base64")
+    private String base64;
+
+    // Constructors, getters, and setters
+
+    // Default constructor
+    public SubmitData() {
+    }
+
+    // Parameterized constructor
+    public SubmitData(String submitText, int activityId, int userId, String base64) {
+        this.submitText = submitText;
+        this.activityId = activityId;
+        this.userId = userId;
+        this.base64 = base64;
+    }
+
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
 
     public String getSubmitText() {
         return submitText;
@@ -13,19 +46,20 @@ public class SubmitData {
         this.submitText = submitText;
     }
 
-    public int getActivity_id() {
-        return activity_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setActivity_id(int activity_id) {
-        this.activity_id = activity_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public String getBase64() {
+        return base64;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 }
+
